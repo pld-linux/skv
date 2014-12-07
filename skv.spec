@@ -126,8 +126,8 @@ rm -rf $RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	-p /sbin/ldconfig
-%postun	-p /sbin/ldconfig
+%post	libs -p /sbin/ldconfig
+%postun	libs -p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
@@ -140,6 +140,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/skv_test_insert_retrieve_sync
 %attr(755,root,root) %{_bindir}/test_skv_insert_command
 %attr(755,root,root) %{_bindir}/test_skv_remove_command
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/skv_server.conf
+
+%files libs
+%defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libfxlogger.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libfxlogger.so.1
 %attr(755,root,root) %{_libdir}/libit_api.so.*.*.*
@@ -154,7 +158,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %ghost %{_libdir}/libskvc.so.1
 %attr(755,root,root) %{_libdir}/libskvc_mpi.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libskvc_mpi.so.1
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/skv_server.conf
 
 %files devel
 %defattr(644,root,root,755)
