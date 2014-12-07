@@ -1,0 +1,49 @@
+--- code-14cbb85f056ae8eecb6936f1613233940dbf7963/CMakeLists.txt.orig	2014-11-20 00:12:07.000000000 +0100
++++ code-14cbb85f056ae8eecb6936f1613233940dbf7963/CMakeLists.txt	2014-12-07 16:44:01.286219809 +0100
+@@ -83,7 +83,7 @@
+ 
+ if(SKV_COMM_API_TYPE MATCHES "verbs")
+   find_package(OFED REQUIRED)
+-  set( IT_API_LIBS ${OFED_LIBRARIES} pthread rt )
++  set( IT_API_LIBS ${OFED_LIBRARIES} pthread rt fxlogger )
+   add_definitions(
+     # enable workaround for missing RoQ loopback functionality
+     -DSKV_ROQ_LOOPBACK_WORKAROUND
+@@ -93,7 +93,7 @@
+     DESTINATION ${CMAKE_MODULE_INSTALL_PATH})
+ endif()
+ if(SKV_COMM_API_TYPE MATCHES "sockets")
+-  set( IT_API_LIBS pthread rt )
++  set( IT_API_LIBS pthread rt fxlogger )
+ endif()
+ 
+ 
+--- code-14cbb85f056ae8eecb6936f1613233940dbf7963/skv/CMakeLists.txt.orig	2014-11-20 00:12:07.000000000 +0100
++++ code-14cbb85f056ae8eecb6936f1613233940dbf7963/skv/CMakeLists.txt	2014-12-07 16:46:51.636212660 +0100
+@@ -1,7 +1,9 @@
+ 
+ set(SKVC_SOURCES c/skv.cpp)
+ set(SKVC_PUBLIC_HEADERS c/skv.h)
++set(SKVC_LINK_LIBRARIES skv_client fxlogger)
+ set(SKVC_MPI_SOURCES ${SKVC_SOURCES})
++set(SKVC_MPI_LINK_LIBRARIES skv_client_mpi fxlogger)
+ 
+ set(SKV_COMMON_SOURCES
+   common/skv_config.cpp
+@@ -21,6 +23,7 @@
+   common/skv_types_ext.hpp
+   common/skv_mutex.hpp
+ )
++set(SKV_COMMON_LINK_LIBRARIES fxlogger)
+ 
+ set(SKV_CLIENT_SOURCES
+   client/skv_client.cpp
+@@ -54,7 +57,7 @@
+ set(SKV_CLIENT_LINK_LIBRARIES it_api fxlogger skv_common)
+ 
+ set(SKV_CLIENT_MPI_SOURCES ${SKV_CLIENT_SOURCES})
+-set(SKV_CLIENT_MPI_LINK_LIBRARIES ${SKV_CLIENT_LINK_LIBRARIES})
++set(SKV_CLIENT_MPI_LINK_LIBRARIES ${SKV_CLIENT_LINK_LIBRARIES} ${MPI_LIBRARIES})
+ 
+ set(SKVSERVER_SOURCES
+   server/skv_local_kv_${SKV_LOCAL_KV_BACKEND}.cpp
