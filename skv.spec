@@ -86,7 +86,7 @@ Dokumentacja API biblioteki SKV.
 
 %prep
 %setup -q -a1 -n code-14cbb85f056ae8eecb6936f1613233940dbf7963
-%patch0 -p1
+%patch -P0 -p1
 
 %{__mv} CMake-* CMake/common
 %{__rm} .gitexternals
